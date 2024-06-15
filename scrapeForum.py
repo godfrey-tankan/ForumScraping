@@ -1,5 +1,6 @@
 import csv
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -7,8 +8,13 @@ from selenium.webdriver.support import expected_conditions as EC
 # Set the path to the ChromeDriver executable
 driver_path = "/usr/local/bin/chromedriver"
 
+# Create the Chrome options
+chrome_options = Options()
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--headless")  # Run Chrome in headless mode (without GUI)
+
 # Create the Chrome driver instance
-driver = webdriver.Chrome(executable_path=driver_path)
+driver = webdriver.Chrome(options=chrome_options)
 
 # Navigate to the target webpage
 driver.get("https://www.tripadvisor.com/ShowTopic-g293760-i9324-k5914396-Zimbabwe-Harare_Harare_Province.html")
