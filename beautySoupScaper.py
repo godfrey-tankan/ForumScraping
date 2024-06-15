@@ -1,9 +1,10 @@
 from selenium import webdriver
+from selenium.webdriver.firefox.service import Service
 from bs4 import BeautifulSoup
-import csv
 
 # Set up the Firefox driver
-driver = webdriver.Firefox(executable_path='/home/tnqn/Downloads/geckodriver-v0.34.0-linux-aarch64')
+firefox_service = Service('/home/tnqn/Downloads/geckodriver-v0.34.0-linux-aarch64')
+driver = webdriver.Firefox(service=firefox_service)
 
 # Navigate to the website
 driver.get('https://www.tripadvisor.com/Forum-g1-i10702-o20-Travel_Companions.html')
