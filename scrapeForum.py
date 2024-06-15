@@ -4,7 +4,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-driver = webdriver.Chrome()  # Replace with the appropriate driver for your browser
+# Set the path to the ChromeDriver executable
+driver_path = "/usr/local/bin/chromedriver"
+
+# Create the Chrome driver instance
+driver = webdriver.Chrome(executable_path=driver_path)
+
+# Navigate to the target webpage
 driver.get("https://www.tripadvisor.com/ShowTopic-g293760-i9324-k5914396-Zimbabwe-Harare_Harare_Province.html")
 
 # Wait for the page to load and the forum container to be present
