@@ -1,32 +1,40 @@
-import csv
-import requests
+from selenium import webdriver
 from bs4 import BeautifulSoup
+import csv
 
-# URL of the target webpage
-url = "https://www.tripadvisor.com/ShowTopic-g293760-i9324-k5914396-Zimbabwe-Harare_Harare_Province.html"
+# Set up the Firefox driver
+driver = webdriver.Firefox(executable_path='/home/tnqn/Downloads/geckodriver-v0.34.0-linux-aarch64')
 
-# Send a GET request to the URL
-response = requests.get(url)
+# Navigate to the website
+driver.get('https://www.tripadvisor.com/Forum-g1-i10702-o20-Travel_Companions.html')
 
-# Parse the HTML content using BeautifulSoup
-soup = BeautifulSoup(response.content, "html.parser")
+# Wait for the captcha to be solved
+driver.implicitly_wait(60)
+
+# Get the HTML content of the page
+html_content = driver.page_source
+
+# Parse the HTML with BeautifulSoup
+soup = BeautifulSoup(html_content, 'html.parser')
 
 # Find the forum container
-forum_container = soup.select_one("#PAGE .desktop.scopedSearch")
+forum_container = soup.select_one('.desktop.scopedSearch')
 
-# Extract the forum data
-forum_posts = forum_container.select(".post")
+# Extract the forum posts
+forum_posts = forum_container.select('.post')
 
-# Save the data to a CSV file
-with open("forum_data.csv", "w", newline="", encoding="utf-8") as csvfile:
-    writer = csv.writer(csvfile)
-    writer.writerow(["Post Title", "Post Content"])
+# Process the forum posts
+for post in forum_posts:
+    # Extract the relevant data from the post
+    username = post.select_one('.username').text.strip()
+    title = post.select_one('.title').text.strip()
+    content = post.select_one('.content').text.strip()
 
-    for post in forum_posts:
-        title_element = post.select_one(".post-title")
-        post_title = title_element.text.strip()
+    # Do something with the data (e.g., save it to a CSV file)
+    print(f'Username: {username}')
+    print(f'Title: {title}')
+    print(f'Content: {content}')
+    print('---')
 
-        content_element = post.select_one(".post-content")
-        post_content = content_element.text.strip()
-
-        writer.writerow([post_title, post_content])
+# Close the browser
+driver.quit()
